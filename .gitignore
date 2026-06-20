@@ -1,0 +1,27 @@
+# Secrets and API Keys (CRITICAL)
+.env
+
+# Virtual Environments
+venv/
+env/
+.venv/
+
+# Local Database Files
+chroma_db/
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# VS Code Settings
+.vscode/
+
+# OS Generated Files
+.DS_Store
+Thumbs.db
+
+# Logs and Data
+*.log
