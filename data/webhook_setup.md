@@ -1,0 +1,2 @@
+# Webhook Integrations
+Webhooks allow your application to receive real-time POST requests when events occur. Payloads are sent in JSON format. You must secure your webhooks by validating the `X-Signature` header using your secret key.

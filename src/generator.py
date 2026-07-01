@@ -4,17 +4,13 @@ from google import genai
 from google.genai import types
 from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
 
 def generate_adaptive_response(user_query: str, persona: str, context_chunks: list) -> dict:
-    """Generates a personalized response or escalates if confidence is low."""
-    
-    # 1. Establish the Escalation Check
-    confidence_threshold = 0.40
+   
+    confidence_threshold = 0.15
     best_score = max([chunk["score"] for chunk in context_chunks]) if context_chunks else 0.0
 
-    # Trigger escalation if retrieval accuracy is poor or no chunks found
     if best_score < confidence_threshold or len(context_chunks) == 0:
         return {
             "escalated": True,
@@ -22,7 +18,6 @@ def generate_adaptive_response(user_query: str, persona: str, context_chunks: li
             "handoff_summary": generate_handoff_summary(user_query, persona, context_chunks)
         }
 
-    # 2. Select System Prompt instruction set depending on classified persona
     if persona == "Technical Expert":
         persona_instructions = (
             "You are a Senior Systems Engineer. Provide clear root-cause analysis, "
@@ -35,14 +30,13 @@ def generate_adaptive_response(user_query: str, persona: str, context_chunks: li
             "Begin with a warm, genuine validation of their difficulty. Use straightforward, "
             "reassuring, and simple action-oriented bullet steps. Avoid confusing jargon."
         )
-    else:  # Business Executive
+    else:  
         persona_instructions = (
             "You are a concise Client Relations Director. Focus on direct business outcomes, "
             "impact summaries, and timelines for resolution. Keep responses extremely "
             "brief, professional, and skip unnecessary configuration details."
         )
 
-    # 3. Assemble complete context-grounded system prompt
     context_text = "\n\n".join([f"Source [{c['source']}]: {c['text']}" for c in context_chunks])
     
     full_system_prompt = (
@@ -77,15 +71,13 @@ def generate_handoff_summary(user_query: str, persona: str, context_chunks: list
         "detected_issue": user_query[:100] + "...",
         "retrieved_sources": [c["source"] for c in context_chunks],
         "confidence_score": max([c["score"] for c in context_chunks]) if context_chunks else 0.0,
-        "recommended_action": "Review system error codes, check API logs, and contact user directly."
+        "recommended_action": "Review retrieved documents and contact the user directly to resolve their specific issue."
     }
     return json.dumps(handoff_data, indent=2)
 
-# --- Quick Test Block ---
 if __name__ == "__main__":
     test_query = "How do I fix a 401 Unauthorized error?"
     test_persona = "Technical Expert"
-    # We are faking the database retrieval here just to test the LLM prompt
     test_chunks = [{
         "source": "api_troubleshooting.md", 
         "text": "If you receive a 401 Unauthorized error, it means your API key is invalid. Navigate to Security > API Keys and Generate a new Bearer Token.", 

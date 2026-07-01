@@ -1,0 +1,2 @@
+# Supported Browsers
+Our web application is optimized for the latest versions of Google Chrome, Mozilla Firefox, and Microsoft Edge. Safari is supported on macOS 12 and above. Internet Explorer is strictly not supported.

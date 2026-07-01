@@ -1,0 +1,2 @@
+# Configuring SAML SSO
+Single Sign-On (SSO) is available for Enterprise tiers. We support Okta, Azure AD, and Google Workspace. You must map your Identity Provider's 'Email' attribute to our 'email_address' field. Contact support if your metadata XML fails to upload.

@@ -1,0 +1,2 @@
+# Two-Factor Authentication (2FA)
+2FA is highly recommended. We support Authenticator apps (Google, Authy) via TOTP. SMS-based 2FA has been deprecated due to security vulnerabilities.

@@ -1,0 +1,2 @@
+# Data Retention Policy
+Inactive free-tier accounts are permanently deleted after 180 days of inactivity. Enterprise data backups are retained across multiple geographic zones for 7 years for compliance with SOC2 standards.

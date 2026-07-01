@@ -1,0 +1,2 @@
+# API Rate Limits
+To ensure platform stability, all API requests are rate-limited to 1,000 requests per minute per IP address. Exceeding this limit will trigger a 429 Too Many Requests error. Enterprise customers can request a limit increase via their account manager.

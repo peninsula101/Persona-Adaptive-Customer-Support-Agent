@@ -1,0 +1,2 @@
+# Troubleshooting 401 Unauthorized
+A 401 Unauthorized error means your Bearer token is missing, expired, or invalid. Navigate to Settings > Developer > API Keys to generate a new token. Never share your secret keys in public repositories.

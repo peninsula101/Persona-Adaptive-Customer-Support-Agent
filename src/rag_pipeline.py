@@ -6,18 +6,15 @@ from google import genai
 import chromadb
 from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
 
 class LocalRAGPipeline:
     def __init__(self, db_dir="./chroma_db"):
-        # Initialize Gemini and the local Chroma Vector Database
         self.client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY", ""))
         self.chroma_client = chromadb.PersistentClient(path=db_dir)
         self.collection = self.chroma_client.get_or_create_collection(name="support_kb")
 
     def get_embedding(self, text: str) -> list:
-        """Calls Gemini to convert text into a mathematical vector."""
         response = self.client.models.embed_content(
             model="gemini-embedding-001",
             contents=text
@@ -25,8 +22,6 @@ class LocalRAGPipeline:
         return response.embeddings[0].values
 
     def ingest_document(self, doc_name: str, content: str):
-        """Splits the document and saves the chunks to the database."""
-        # We split text into 400-character chunks with a 40-character overlap
         splitter = RecursiveCharacterTextSplitter(chunk_size=400, chunk_overlap=40)
         chunks = splitter.split_text(content)
         
@@ -34,7 +29,6 @@ class LocalRAGPipeline:
             embedding = self.get_embedding(chunk)
             chunk_id = f"{doc_name}_chunk_{idx}"
             
-            # Save to ChromaDB
             self.collection.add(
                 ids=[chunk_id],
                 embeddings=[embedding],
@@ -62,13 +56,11 @@ class LocalRAGPipeline:
                 
         return retrieved_items
 
-# --- Utility Function to Load the Data Folder ---
 def build_database_from_folder(data_folder="data"):
     """Reads all compatible files in the data folder and ingests them."""
     rag = LocalRAGPipeline()
     print("Starting Knowledge Base Ingestion...")
     
-    # Read text and markdown files
     for ext in ["*.txt", "*.md"]:
         for filepath in glob.glob(os.path.join(data_folder, ext)):
             filename = os.path.basename(filepath)
@@ -77,7 +69,6 @@ def build_database_from_folder(data_folder="data"):
                 rag.ingest_document(filename, content)
                 print(f"✅ Ingested: {filename}")
                 
-    # Read PDF files
     for filepath in glob.glob(os.path.join(data_folder, "*.pdf")):
         filename = os.path.basename(filepath)
         reader = PdfReader(filepath)
@@ -92,6 +83,5 @@ def build_database_from_folder(data_folder="data"):
         
     print("Database built successfully!")
 
-# Run the ingestion process if we execute this file directly
 if __name__ == "__main__":
     build_database_from_folder()

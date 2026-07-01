@@ -1,0 +1,2 @@
+# How to Cancel
+You can cancel or downgrade your subscription at any time under Billing > Plan Details. Downgrades take effect at the end of your current billing cycle. No prorated refunds are issued for mid-month cancellations.

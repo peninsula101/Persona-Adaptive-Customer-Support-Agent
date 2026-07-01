@@ -4,13 +4,11 @@ from google import genai
 from google.genai import types
 from dotenv import load_dotenv
 
-# Load the environment variables from your .env file
 load_dotenv()
 
 def classify_customer_persona(user_message: str) -> dict:
     """Analyzes the user's message and classifies it into one of the three target personas."""
     
-    # Initialize the Gemini GenAI Client
     client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY", ""))
 
     system_instruction = (
@@ -23,7 +21,6 @@ def classify_customer_persona(user_message: str) -> dict:
         "Provide your evaluation strictly in the requested JSON structure."
     )
 
-    # Define structured schema output
     response_schema = {
         "type": "OBJECT",
         "properties": {
@@ -50,7 +47,6 @@ def classify_customer_persona(user_message: str) -> dict:
     
     return json.loads(response.text)
 
-# Example usage check to test if it works!
 if __name__ == "__main__":
     test_msg = "Our production API key stopped working with a 401 Unauthorized block. Check our logs immediately."
     result = classify_customer_persona(test_msg)
