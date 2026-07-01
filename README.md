@@ -12,6 +12,8 @@ This project is an intelligent, retrieval-augmented customer support agent built
 * **Document Parsing:** PyPDF (>=3.0.0)
 * **Chunking:** LangChain Text Splitters (`langchain-text-splitters`)
 
+## Published Link: https://persona-adaptive-customer-support-agent-5nbrnh8qqjamcrqs83wp6a.streamlit.app/
+
 ---
 
 ## Objective
