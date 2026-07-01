@@ -3,6 +3,14 @@ import json
 from src.classifier import classify_customer_persona
 from src.rag_pipeline import LocalRAGPipeline
 from src.generator import generate_adaptive_response
+import os
+from src.rag_pipeline import build_database_from_folder
+
+# --- Database Initialization ---
+# When deployed, the chroma_db folder won't exist yet. This builds it automatically.
+if not os.path.exists("chroma_db"):
+    with st.spinner("First-time setup: Initializing Enterprise Knowledge Base..."):
+        build_database_from_folder()
 
 st.set_page_config(page_title="Persona-Adaptive Customer Support Agent", page_icon="🤖", layout="centered")
 st.title("🤖 Persona-Adaptive Support Agent")
