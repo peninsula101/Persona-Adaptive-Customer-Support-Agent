@@ -20,12 +20,12 @@ This project is an intelligent, retrieval-augmented customer support agent built
 ○	Technical Expert <br>
 ○	Frustrated User <br>
 ○	Business Executive <br>
-●	Retrieves relevant information from a knowledge base
-●	Adapts response style and tone according to the detected persona
-●	Generates grounded responses using retrieved content
-●	Escalates conversations to a human support agent when appropriate
-●	Provides a structured handoff summary during escalation
-●	Runs end-to-end through a command-line interface or web UI
+●	Retrieves relevant information from a knowledge base <br>
+●	Adapts response style and tone according to the detected persona <br>
+●	Generates grounded responses using retrieved content <br>
+●	Escalates conversations to a human support agent when appropriate <br>
+●	Provides a structured handoff summary during escalation <br>
+●	Runs end-to-end through a command-line interface or web UI <br>
 ---
 
 ## Architecture Diagram
