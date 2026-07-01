@@ -6,6 +6,15 @@ from src.generator import generate_adaptive_response
 import os
 from src.rag_pipeline import build_database_from_folder
 
+# --- Manual Database Override ---
+
+if st.sidebar.button("🛠️ Force Rebuild Database"):
+    with st.spinner("Rebuilding knowledge base..."):
+        from src.rag_pipeline import build_database_from_folder
+        build_database_from_folder()
+        st.sidebar.success("Database Rebuilt! Please refresh the page.")
+# --------------------------------
+
 # --- Database Initialization ---
 # When deployed, the chroma_db folder won't exist yet. This builds it automatically.
 if not os.path.exists("chroma_db"):
