@@ -30,3 +30,21 @@ This project is an intelligent, retrieval-augmented customer support agent built
       ├─▶ (If Confidence < 0.40) ──▶ [Escalate to Human Agent] ──▶ [Generate JSON Handoff]
       │
       └─▶ (If Confidence ≥ 0.40) ──▶ [Generate Persona-Adaptive Response]
+```
+---
+
+To Test
+
+Drop these into your Streamlit app one by one:
+
+1. The "Technical Expert" Test
+"I keep getting a 401 Unauthorized error when hitting the endpoint. Also, what is the exact X-Signature header validation process for webhook payloads?"
+
+2. The "Business Executive" Test
+"What is the guaranteed monthly uptime SLA for our enterprise tier, and what specific service credits are we entitled to if performance drops below 99.99%? Give me the bottom line for our ₹500,000 annual contract."
+
+3. The "Frustrated User" Test
+"I was double charged this month because of some stupid system glitch and I am incredibly angry! How do I get my money back right now before I just cancel my subscription?!"
+
+4. The "Escalation Protocol" Test (Human Handoff)
+"I am trying to configure an expo-sqlite database for my React Native mobile application and I keep getting a 'directory not found' error on Android. How do I fix this?"
