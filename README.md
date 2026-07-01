@@ -15,11 +15,11 @@ This project is an intelligent, retrieval-augmented customer support agent built
 ---
 
 ## Objective
-●	Detects customer personas from incoming messages
-●	Supports at least three personas:
-○	Technical Expert
-○	Frustrated User
-○	Business Executive
+●	Detects customer personas from incoming messages <br>
+●	Supports at least three personas: <br>
+○	Technical Expert <br>
+○	Frustrated User <br>
+○	Business Executive <br>
 ●	Retrieves relevant information from a knowledge base
 ●	Adapts response style and tone according to the detected persona
 ●	Generates grounded responses using retrieved content
