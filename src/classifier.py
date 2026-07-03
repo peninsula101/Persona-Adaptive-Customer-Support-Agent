@@ -1,5 +1,5 @@
 from google import genai
-from google.genai import errors
+from google.genai import types, errors
 import streamlit as st
 
 try:
@@ -29,13 +29,16 @@ def classify_customer_persona(prompt: str) -> str:
         response = client.models.generate_content(
             model='gemini-2.5-flash',
             contents=prompt,
-            config=genai.GenerationContentConfig(
+            config=genai.GenerateContentConfig(
                 system_instruction=system_instruction,
                 temperature=0.1,
             )
         )
-        return response.text.strip()
+        cleaned_persona = response.text.strip()
+        return {
+            "persona": cleaned_persona,
+            "reasoning": response.text  # Full reasoning for transparency
+        }
     except (errors.ServerError, errors.APIError, Exception) as e:
         print(f"⚠️ Cloud API hiccup during persona detection ({type(e).__name__}): {e}")
-        return "Neutral User"  # Fallback persona in case of API errors
-    
+        return {"persona": "Neutral User"}
