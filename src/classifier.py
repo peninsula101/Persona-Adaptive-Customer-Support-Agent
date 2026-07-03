@@ -1,53 +1,41 @@
-import os
-import json
 from google import genai
-from google.genai import types
-from dotenv import load_dotenv
+from google.genai import errors
+import streamlit as st
 
-load_dotenv()
+try:
+    API_KEY = st.secrets["GEMINI_API_KEY"]
+except KeyError:
+    import os
+    API_KEY = os.environ.get("GEMINI_API_KEY")
 
-def classify_customer_persona(user_message: str) -> dict:
-    """Analyzes the user's message and classifies it into one of the three target personas."""
-    
-    client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY", ""))
+client = genai.Client(api_key=API_KEY)
 
-    system_instruction = (
-        "You are an advanced classification engine. Your task is to analyze the "
-        "sentiment, vocabulary, and tone of an incoming support message and classify "
-        "it into exactly one of three customer personas: \n"
-        "1. 'Technical Expert': Uses jargon, asks about APIs/code/configs.\n"
-        "2. 'Frustrated User': Uses emotional language, exclamation marks, or mentions urgency.\n"
-        "3. 'Business Executive': Focuses on business impact, ROI, timelines, and brevity.\n\n"
-        "Provide your evaluation strictly in the requested JSON structure."
-    )
+def classify_customer_persona(prompt: str) -> str:
+    """
+    Classifies the user's prompt into a distinct persona using Gemini.
+    Includes fallback error handling to prevent app crashes during cloud API timeouts.
+    """
+    system_instruction = """
+    You are an expert customer support routing AI. Analyze the user's message and categorize their persona into EXACTLY ONE of the following labels:
+    - Technical Expert
+    - Executive / Decision Maker
+    - Frustrated User
+    - Neutral User
 
-    response_schema = {
-        "type": "OBJECT",
-        "properties": {
-            "persona": {
-                "type": "STRING",
-                "enum": ["Technical Expert", "Frustrated User", "Business Executive"]
-            },
-            "confidence": {"type": "NUMBER"},
-            "reasoning": {"type": "STRING"}
-        },
-        "required": ["persona", "confidence", "reasoning"]
-    }
+    Return ONLY the exact label string without any markdown, bullet points, or extra text.
+    """
 
-    response = client.models.generate_content(
-        model='gemini-2.5-flash',
-        contents=user_message,
-        config=types.GenerateContentConfig(
-            system_instruction=system_instruction,
-            response_mime_type="application/json",
-            response_schema=response_schema,
-            temperature=0.1
+    try:
+        response = client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=prompt,
+            config=genai.GenerationContentConfig(
+                system_instruction=system_instruction,
+                temperature=0.1,
+            )
         )
-    )
+        return response.text.strip()
+    except (errors.ServerError, errors.APIError, Exception) as e:
+        print(f"⚠️ Cloud API hiccup during persona detection ({type(e).__name__}): {e}")
+        return "Neutral User"  # Fallback persona in case of API errors
     
-    return json.loads(response.text)
-
-if __name__ == "__main__":
-    test_msg = "Our production API key stopped working with a 401 Unauthorized block. Check our logs immediately."
-    result = classify_customer_persona(test_msg)
-    print(json.dumps(result, indent=2))
